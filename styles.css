@@ -9,6 +9,13 @@ h1, h2 { margin: 0; line-height: 1.05; font-weight: 400; } h1 { font-size: clamp
 .panel { overflow: hidden; border: 1px solid var(--line); background: var(--panel); box-shadow: 0 12px 34px rgba(23, 33, 29, .06); }
 .panel-heading { display: flex; align-items: end; justify-content: space-between; padding: 26px 28px; border-bottom: 1px solid var(--line); }
 .count { color: var(--muted); font: 14px 'Trebuchet MS', sans-serif; }
+.search-label { display: flex; align-items: center; gap: 14px; padding: 14px 28px; color: var(--muted); font: 13px 'Trebuchet MS', sans-serif; }
+input, select { padding: 8px; border: 1px solid var(--line); border-radius: 0; background: white; color: var(--ink); font: 14px Georgia, serif; } .search-label input { width: min(300px, 100%); }
+.ingredient-form { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; padding: 18px 28px; border-top: 1px solid #e7e9e4; border-bottom: 1px solid #e7e9e4; background: #faf9f4; }
+.ingredient-form label { display: grid; gap: 5px; color: var(--muted); font: 12px 'Trebuchet MS', sans-serif; } .ingredient-form label input, .ingredient-form select { width: 130px; }
+.ingredient-form button { height: 35px; } .secondary, .text-button { background: transparent; color: var(--ink); } .hidden { display: none; }
+.form-error { flex-basis: 100%; min-height: 19px; margin: 0; color: var(--low); font: 13px 'Trebuchet MS', sans-serif; }
+.row-actions { text-align: right; } .row-actions button { margin-left: 5px; } .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 .table-wrap { overflow-x: auto; } table { width: 100%; border-collapse: collapse; text-align: left; }
 th, td { padding: 17px 28px; border-bottom: 1px solid #e7e9e4; white-space: nowrap; }
 thead th { color: var(--muted); font: 700 11px 'Trebuchet MS', sans-serif; letter-spacing: .08em; text-transform: uppercase; }
