@@ -1,5 +1,11 @@
+import { deductRecipe, getMenuAvailability } from './inventory.js';
+
 const stockList = document.querySelector('#stock-list');
 const stockCount = document.querySelector('#stock-count');
+const menuList = document.querySelector('#menu-list');
+const orderMessage = document.querySelector('#order-message');
+let stock = [];
+let recipes = [];
 
 function formatQuantity(value) { return Number(value.toFixed(3)).toString(); }
 
@@ -13,6 +19,27 @@ function renderStock(stock) {
   }));
 }
 
-const response = await fetch('./stock.json');
-if (!response.ok) throw new Error(`Could not load stock.json (${response.status})`);
-renderStock(await response.json());
+function renderMenu() {
+  menuList.replaceChildren(...getMenuAvailability(recipes, stock).map((dish) => {
+    const item = document.createElement('article');
+    item.className = 'menu-item';
+    item.innerHTML = `<div><h3>${dish.name}</h3><p class="price">₹${dish.price}</p></div><div class="menu-action"><span class="status ${dish.available ? 'status-ok' : 'status-low'}">${dish.available ? 'Available' : 'Unavailable'}</span><button type="button" ${dish.available ? '' : 'disabled'}>${dish.available ? 'Order one' : dish.unavailableReason}</button></div>`;
+    item.querySelector('button').addEventListener('click', () => orderDish(dish.id));
+    return item;
+  }));
+}
+
+function orderDish(recipeId) {
+  const recipe = recipes.find((item) => item.id === recipeId);
+  stock = deductRecipe(stock, recipe);
+  orderMessage.textContent = `${recipe.name} ordered`;
+  renderStock(stock);
+  renderMenu();
+}
+
+const [stockResponse, recipesResponse] = await Promise.all([fetch('./stock.json'), fetch('./recipes.json')]);
+if (!stockResponse.ok || !recipesResponse.ok) throw new Error('Could not load menu data');
+stock = await stockResponse.json();
+recipes = await recipesResponse.json();
+renderStock(stock);
+renderMenu();
