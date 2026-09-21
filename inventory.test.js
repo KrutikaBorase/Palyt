@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { getMenuAvailability } from './inventory.js';
+import { deductRecipe, getMenuAvailability } from './inventory.js';
 
 const stock = [
   { id: 'paneer', name: 'Paneer', quantity: 1, parLevel: 0.5 },
@@ -19,4 +19,16 @@ test('a dish is available at par and unavailable below par', () => {
 test('a missing recipe ingredient makes a dish unavailable', () => {
   const menu = getMenuAvailability([dish], stock.filter((item) => item.id !== 'cashews'));
   assert.equal(menu[0].unavailableReason, 'Missing cashews');
+});
+
+test('ordering deducts recipe amounts without mutating the original stock', () => {
+  const updated = deductRecipe(stock, dish);
+  assert.equal(updated.find((item) => item.id === 'paneer').quantity, 0.82);
+  assert.equal(updated.find((item) => item.id === 'cashews').quantity, 0.28);
+  assert.equal(stock.find((item) => item.id === 'paneer').quantity, 1);
+});
+
+test('ordering fails when a required ingredient is below par', () => {
+  const lowCashews = stock.map((item) => item.id === 'cashews' ? { ...item, quantity: 0.19 } : item);
+  assert.throws(() => deductRecipe(lowCashews, dish), /Cashews is below par/);
 });

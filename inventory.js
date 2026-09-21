@@ -19,3 +19,14 @@ export function getMenuAvailability(recipes, stock) {
     return { ...recipe, available: unavailableReason === null, unavailableReason };
   });
 }
+
+export function deductRecipe(stock, recipe, portions = 1) {
+  if (!Number.isInteger(portions) || portions < 1) throw new Error('Portions must be a positive whole number');
+  const stockById = Object.fromEntries(stock.map((ingredient) => [ingredient.id, ingredient]));
+  const reason = getUnavailableReason(recipe, stockById);
+  if (reason) throw new Error(`Cannot order ${recipe.name}: ${reason}`);
+  return stock.map((ingredient) => {
+    const remaining = ingredient.quantity - (recipe.ingredients[ingredient.id] ?? 0) * portions;
+    return { ...ingredient, quantity: Math.round((remaining + Number.EPSILON) * 1000) / 1000 };
+  });
+}
