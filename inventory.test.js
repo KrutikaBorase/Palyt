@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { deductRecipe, getMenuAvailability } from './inventory.js';
+import { deductRecipe, getMenuAvailability, validateIngredient } from './inventory.js';
 
 const stock = [
   { id: 'paneer', name: 'Paneer', quantity: 1, parLevel: 0.5 },
@@ -31,4 +31,11 @@ test('ordering deducts recipe amounts without mutating the original stock', () =
 test('ordering fails when a required ingredient is below par', () => {
   const lowCashews = stock.map((item) => item.id === 'cashews' ? { ...item, quantity: 0.19 } : item);
   assert.throws(() => deductRecipe(lowCashews, dish), /Cashews is below par/);
+});
+
+test('ingredient validation rejects unsafe values and accepts a valid row', () => {
+  assert.deepEqual(validateIngredient({ id: 'new', name: '', unit: 'bag', quantity: -1, parLevel: 0 }), [
+    'Name is required', 'Unit must be kg, L, or each', 'Quantity must be zero or more', 'Par level must be greater than zero'
+  ]);
+  assert.deepEqual(validateIngredient({ id: 'new', name: 'Mint', unit: 'kg', quantity: 0.2, parLevel: 0.05 }), []);
 });

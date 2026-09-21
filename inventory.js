@@ -30,3 +30,17 @@ export function deductRecipe(stock, recipe, portions = 1) {
     return { ...ingredient, quantity: Math.round((remaining + Number.EPSILON) * 1000) / 1000 };
   });
 }
+
+export function getRecipeReferences(ingredientId, recipes) {
+  return recipes.filter((recipe) => Object.hasOwn(recipe.ingredients, ingredientId));
+}
+
+export function validateIngredient(input, existingIds = [], currentId = null) {
+  const errors = [];
+  if (!input.name?.trim()) errors.push('Name is required');
+  if (!['kg', 'L', 'each'].includes(input.unit)) errors.push('Unit must be kg, L, or each');
+  if (!Number.isFinite(input.quantity) || input.quantity < 0) errors.push('Quantity must be zero or more');
+  if (!Number.isFinite(input.parLevel) || input.parLevel <= 0) errors.push('Par level must be greater than zero');
+  if (existingIds.includes(input.id) && input.id !== currentId) errors.push('An ingredient with this name already exists');
+  return errors;
+}
