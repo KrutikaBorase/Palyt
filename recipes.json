@@ -1,0 +1,7 @@
+[
+  { "id": "paneer-butter-masala", "name": "Paneer butter masala", "price": 320, "ingredients": { "paneer": 0.18, "tomatoes": 0.12, "onions": 0.08, "cashews": 0.02, "cream": 0.04, "butter": 0.015 } },
+  { "id": "palak-paneer", "name": "Palak paneer", "price": 290, "ingredients": { "paneer": 0.16, "spinach": 0.15, "onions": 0.06, "cashews": 0.01, "cream": 0.025, "garlic": 0.008 } },
+  { "id": "chana-masala", "name": "Chana masala", "price": 220, "ingredients": { "chickpeas": 0.16, "tomatoes": 0.1, "onions": 0.08, "ginger": 0.006, "garlic": 0.006, "coriander": 0.004 } },
+  { "id": "jeera-rice", "name": "Jeera rice", "price": 160, "ingredients": { "basmati-rice": 0.09, "butter": 0.008 } },
+  { "id": "roti", "name": "Tandoori roti", "price": 45, "ingredients": { "flour": 0.06, "butter": 0.004 } }
+]
