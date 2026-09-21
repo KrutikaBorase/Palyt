@@ -30,7 +30,7 @@ function renderMenu() {
   menuList.replaceChildren(...getMenuAvailability(recipes, stock).map((dish) => {
     const item = document.createElement('article');
     item.className = 'menu-item';
-    item.innerHTML = `<div><h3>${dish.name}</h3><p class="price">₹${dish.price}</p></div><div class="menu-action"><span class="status ${dish.available ? 'status-ok' : 'status-low'}">${dish.available ? 'Available' : 'Unavailable'}</span><button type="button" ${dish.available ? '' : 'disabled'}>${dish.available ? 'Order one' : dish.unavailableReason}</button></div>`;
+    item.innerHTML = `<div><h3>${dish.name}</h3><p class="price">₹${dish.price}</p></div><div class="menu-action"><span class="status ${dish.available ? 'status-ok' : 'status-low'}">${dish.available ? 'Available' : 'Unavailable'}</span><button type="button" data-recipe-id="${dish.id}" ${dish.available ? '' : 'disabled'}>${dish.available ? 'Order one' : dish.unavailableReason}</button></div>`;
     item.querySelector('button').addEventListener('click', () => orderDish(dish.id));
     return item;
   }));
